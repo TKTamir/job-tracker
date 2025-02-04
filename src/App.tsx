@@ -1,7 +1,8 @@
+import React from "react";
 import './App.css'
 import Home from "./pages/Home/Home.tsx";
 
-function App() {
+const App: React.FC = () => {
 
   return (
     <div>

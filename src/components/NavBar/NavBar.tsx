@@ -1,4 +1,6 @@
-function NavBar() {
+import React from "react";
+
+const NavBar: React.FC = () => {
 
   return (
     <div className="NavBar bg-blue-50 flex w-full m-0 justify-between">

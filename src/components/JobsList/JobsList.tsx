@@ -1,6 +1,7 @@
+import React from "react";
 import JobItem from "../JobItem/JobItem.tsx";
 
-function JobsList() {
+const JobsList: React.FC = () => {
   const jobList = [{
     applicationDate: '01/02/2025',
     companyName: 'Apple',

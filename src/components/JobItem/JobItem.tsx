@@ -1,6 +1,7 @@
+import React from "react";
 import {JobItemProps} from "./Interfaces.ts";
 
-function JobItem({jobList}: JobItemProps) {
+const JobItem: React.FC<JobItemProps> = ({jobList}) => {
 
   return (
     <div className="JobItem">
