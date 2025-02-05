@@ -1,11 +1,11 @@
 import React from "react";
 import JobItem from "../JobItem/JobItem.tsx";
-import {JobItemProps} from "../JobItem/Interfaces.ts";
+import {IJobItem} from "../JobItem/Interfaces.ts";
 import {RootState} from "../../state/store.ts";
 import {useSelector} from "react-redux";
 
 const JobsList: React.FC = () => {
-  const jobs: JobItemProps[] = useSelector(
+  const jobs: IJobItem[] = useSelector(
     (state: RootState) => state.jobs.jobsList
   );
 
@@ -16,7 +16,7 @@ const JobsList: React.FC = () => {
         <p className="text-gray-500">No jobs found.</p>
       ) : (
         jobs.map((job, index) => (
-          <JobItem key={index} jobsList={job}/>
+          <JobItem key={index} job={job} index={index}/>
         ))
       )}
     </div>

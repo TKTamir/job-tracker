@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {JobItemProps} from "../JobItem/Interfaces.ts";
+import {IJobItem} from "../JobItem/Interfaces.ts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
 import {addJob} from "../../state/job/jobSlice.ts";
@@ -7,7 +7,7 @@ import {addJob} from "../../state/job/jobSlice.ts";
 
 const AddJob: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [jobData, setJobData] = useState<JobItemProps>({
+  const [jobData, setJobData] = useState<IJobItem>({
     applicationDate: "",
     companyName: "",
     companyWebsite: "",
