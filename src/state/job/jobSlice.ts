@@ -2,12 +2,12 @@ import {JobItemProps} from "../../components/JobItem/Interfaces.ts";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface JobState {
-  jobs: JobItemProps[];
+  jobsList: JobItemProps[];
   currentJob: JobItemProps;
 }
 
 const initialState: JobState = {
-  jobs: [],
+  jobsList: [],
   currentJob: {
     applicationDate: "",
     companyName: "",
@@ -26,7 +26,7 @@ const jobSlice = createSlice({
   reducers: {
     // TODO: convert to an sync thunk that calls an API when backend is built
     addJob: (state, action: PayloadAction<JobItemProps>) => {
-      state.jobs.push(action.payload);
+      state.jobsList.push(action.payload);
     },
   },
 });
