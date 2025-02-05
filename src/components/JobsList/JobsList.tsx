@@ -1,42 +1,18 @@
 import React from "react";
 import JobItem from "../JobItem/JobItem.tsx";
+import {JobItemProps} from "../JobItem/Interfaces.ts";
+import {RootState} from "../../state/store.ts";
+import {useSelector} from "react-redux";
 
 const JobsList: React.FC = () => {
-  const jobList = [{
-    applicationDate: '01/02/2025',
-    companyName: 'Apple',
-    companyWebsite: 'https://apple.com',
-    jobAd: 'https://www.linkedin.com/in/tamir-kahalany-6b9baa143/',
-    positionName: 'Company Position',
-    progression: '2nd Stage',
-    requestedSalary: '25k',
-    status: 'relevant',
-  }, {
-    applicationDate: '01/02/2025',
-    companyName: 'Google',
-    companyWebsite: 'https://google.com',
-    jobAd: 'https://www.linkedin.com/in/tamir-kahalany-6b9baa143/',
-    positionName: 'Company Position',
-    progression: '1nd Stage',
-    requestedSalary: '23k',
-    status: 'irrelevant',
-  }, {
-    applicationDate: '01/02/2025',
-    companyName: 'Meta',
-    companyWebsite: 'https://meta.com',
-    jobAd: 'https://www.linkedin.com/in/tamir-kahalany-6b9baa143/',
-    positionName: 'Company Position',
-    progression: '3nd Stage',
-    requestedSalary: '26k',
-    status: 'relevant',
-  },
-  ];
+  const jobs: JobItemProps[] = useSelector((state: RootState) => state.jobs.jobsList);
+
 
   return (
     <div className="JobsList">
       <h2 className="m-2">JobList</h2>
-      {jobList.map((job, index) => (
-        <JobItem key={index} jobList={job}/>
+      {jobs.map((job, index) => (
+        <JobItem key={index} jobsList={job}/>
       ))}
     </div>
   )
