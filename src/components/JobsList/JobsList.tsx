@@ -5,15 +5,20 @@ import {RootState} from "../../state/store.ts";
 import {useSelector} from "react-redux";
 
 const JobsList: React.FC = () => {
-  const jobs: JobItemProps[] = useSelector((state: RootState) => state.jobs.jobsList);
-
+  const jobs: JobItemProps[] = useSelector(
+    (state: RootState) => state.jobs.jobsList
+  );
 
   return (
     <div className="JobsList">
       <h2 className="m-2">JobList</h2>
-      {jobs.map((job, index) => (
-        <JobItem key={index} jobsList={job}/>
-      ))}
+      {jobs.length === 0 ? (
+        <p className="text-gray-500">No jobs found.</p>
+      ) : (
+        jobs.map((job, index) => (
+          <JobItem key={index} jobsList={job}/>
+        ))
+      )}
     </div>
   )
 }
