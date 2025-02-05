@@ -1,30 +1,30 @@
 import React from "react";
 import {JobItemProps} from "./Interfaces.ts";
 
-const JobItem: React.FC<JobItemProps> = ({jobList}) => {
+const JobItem: React.FC<{ jobsList: JobItemProps }> = ({jobsList}) => {
 
   return (
     <div className="JobItem">
-      <h3 className="m-2">{jobList.companyName}</h3>
+      <h3 className="m-2">{jobsList.companyName}</h3>
       <ul className="list-disc">
-        <li>Position: {jobList.positionName}</li>
-        <li>Application Date: {jobList.applicationDate}</li>
-        <li>Status: {jobList.status}</li>
-        <li>Progression: {jobList.progression}</li>
-        <li>Requested Salary: {jobList.requestedSalary}</li>
+        <li>Position: {jobsList.positionName}</li>
+        <li>Application Date: {jobsList.applicationDate}</li>
+        <li>Status: {jobsList.status}</li>
+        <li>Progression: {jobsList.progression}</li>
+        <li>Requested Salary: {jobsList.requestedSalary}</li>
         <li>
           Website:
           <a
-            href={jobList.companyWebsite}
+            href={jobsList.companyWebsite}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 underline"
-          >{jobList.companyWebsite}</a>
+          >{jobsList.companyWebsite}</a>
         </li>
         <li>
           Job Ad:
           <a
-            href={jobList.jobAd}
+            href={jobsList.jobAd}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 underline"
