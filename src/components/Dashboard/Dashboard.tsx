@@ -1,6 +1,5 @@
 import React from "react";
 import JobsList from "../JobsList/JobsList.tsx";
-import AddJob from "../AddJob/AddJob.tsx";
 
 const Dashboard: React.FC = () => {
 
@@ -11,9 +10,6 @@ const Dashboard: React.FC = () => {
       </div>
       <div className="justify-self-center">
         <JobsList/>
-      </div>
-      <div className="justify-self-center">
-        <AddJob/>
       </div>
     </div>
   )
