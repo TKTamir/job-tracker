@@ -1,4 +1,4 @@
-export interface JobItemProps {
+export interface IJobItem {
   applicationDate: string;
   companyName: string;
   companyWebsite: string;
@@ -7,4 +7,9 @@ export interface JobItemProps {
   progression: string;
   requestedSalary: string;
   status: string;
+}
+
+export interface JobItemProps {
+  job: IJobItem;
+  index: number;
 }
