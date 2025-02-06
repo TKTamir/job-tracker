@@ -2,16 +2,31 @@ import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../state/store.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
+import AddJob from "../AddJob/AddJob.tsx";
 
-interface ModalProps {
-  children: React.ReactNode | null;
-}
 
-const Modal: React.FC<ModalProps> = ({children}) => {
+const Modal: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {isModalOpen} = useSelector((state: RootState) => state.modal)
+  const {isModalOpen, modalType} = useSelector((state: RootState) => state.modal)
 
   if (!isModalOpen) return null;
+
+  let content: React.ReactNode = null;
+  switch (modalType) {
+    case "REGISTER":
+      // TODO: Replace with Register Component
+      content = <AddJob/>;
+      break;
+    case "LOGIN":
+      // TODO: Replace with Login component
+      content = <AddJob/>;
+      break;
+    case "ADD_JOB":
+      content = <AddJob/>;
+      break;
+    default:
+      content = null;
+  }
 
   const handleBackdropClick = () => {
     dispatch(closeModal());
@@ -32,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({children}) => {
         <button onClick={() => dispatch(closeModal())}>
           X
         </button>
-        {children}
+        {content}
       </div>
     </div>
   );
