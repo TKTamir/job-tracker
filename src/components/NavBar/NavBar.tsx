@@ -4,13 +4,22 @@ import AddJob from "../AddJob/AddJob.tsx";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
 import {openModal} from "../../state/modal/modalSlice.ts";
+import {setSearchQuery} from "../../state/search/searchSlice.ts";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
+
   return (
     <div className="NavBar bg-blue-50 flex w-full m-0 justify-between">
-      <input className="m-2" placeholder="Search"/>
+      <input
+        className="m-2"
+        placeholder="Search"
+        onChange={handleSearchChange}
+      />
       <button className="m-2" onClick={() => dispatch(openModal())}>+</button>
       <Modal>
         <AddJob/>
