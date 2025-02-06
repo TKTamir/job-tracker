@@ -8,14 +8,17 @@ const JobsList: React.FC = () => {
   const jobs: IJobItem[] = useSelector(
     (state: RootState) => state.jobs.jobsList
   );
+  const searchQuery = useSelector((state: RootState) => state.search.query);
+
+  const filteredJobs = jobs.filter(job => job.companyName.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
     <div className="JobsList">
       <h2 className="m-2">JobList</h2>
-      {jobs.length === 0 ? (
+      {filteredJobs.length === 0 ? (
         <p className="text-gray-500">No jobs found.</p>
       ) : (
-        jobs.map((job, index) => (
+        filteredJobs.map((job, index) => (
           <JobItem key={index} job={job} index={index}/>
         ))
       )}
