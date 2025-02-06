@@ -13,9 +13,22 @@ const Modal: React.FC<ModalProps> = ({children}) => {
 
   if (!isModalOpen) return null;
 
+  const handleBackdropClick = () => {
+    dispatch(closeModal());
+  };
+
+  const handleContentClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="Modal fixed inset-0 flex items-center justify-center z-10">
-      <div className="relative bg-white p-6 rounded-lg shadow-lg w-96">
+    <div className="Modal fixed inset-0 flex items-center justify-center z-10"
+         onClick={handleBackdropClick}
+    >
+      <div
+        className="relative bg-white p-6 rounded-lg shadow-lg w-96"
+        onClick={handleContentClick}
+      >
         <button onClick={() => dispatch(closeModal())}>
           X
         </button>
