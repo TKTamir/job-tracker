@@ -3,6 +3,7 @@ import {IJobItem} from "../JobItem/Interfaces.ts";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
 import {addJob} from "../../state/job/jobSlice.ts";
+import {closeModal} from "../../state/modal/modalSlice.ts";
 
 
 const AddJob: React.FC = () => {
@@ -33,7 +34,6 @@ const AddJob: React.FC = () => {
     }
     console.log(jobData);
     dispatch(addJob(jobData));
-
     setJobData({
       applicationDate: "",
       companyName: "",
@@ -44,6 +44,7 @@ const AddJob: React.FC = () => {
       requestedSalary: "",
       status: "",
     });
+    dispatch(closeModal());
   };
 
   return (
