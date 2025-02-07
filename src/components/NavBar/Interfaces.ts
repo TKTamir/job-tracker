@@ -1,0 +1,1 @@
+export type ModalTypes = "ADD_JOB" | "REGISTER" | "LOGIN" | null;

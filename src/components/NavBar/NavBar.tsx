@@ -1,13 +1,17 @@
 import React from "react";
 import Modal from "../Modal/Modal.tsx";
-import AddJob from "../AddJob/AddJob.tsx";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
 import {openModal} from "../../state/modal/modalSlice.ts";
 import {setSearchQuery} from "../../state/search/searchSlice.ts";
+import {ModalTypes} from "./Interfaces.ts";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const handleOpenModal = (modalType: ModalTypes) => {
+    dispatch(openModal(modalType));
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchQuery(e.target.value));
@@ -20,14 +24,12 @@ const NavBar: React.FC = () => {
         placeholder="Search"
         onChange={handleSearchChange}
       />
-      <button className="m-2" onClick={() => dispatch(openModal())}>+</button>
-      <Modal>
-        <AddJob/>
-      </Modal>
+      <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
       <div className="">
-        <button className="m-2">Register</button>
-        <button className="m-2">Log in</button>
+        <button className="m-2" onClick={() => handleOpenModal("REGISTER")}>Register</button>
+        <button className="m-2" onClick={() => handleOpenModal("LOGIN")}>Log in</button>
       </div>
+      <Modal/>
     </div>
   )
 }
