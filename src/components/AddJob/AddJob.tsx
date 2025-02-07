@@ -32,7 +32,7 @@ const AddJob: React.FC = () => {
       alert("Company Name and Position are required.");
       return;
     }
-    console.log(jobData);
+
     dispatch(addJob(jobData));
     setJobData({
       applicationDate: "",
