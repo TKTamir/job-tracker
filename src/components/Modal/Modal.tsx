@@ -3,23 +3,22 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../state/store.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 import AddJob from "../AddJob/AddJob.tsx";
-
+import Register from "../Register/Register.tsx";
+import Login from "../Login/Login.tsx";
 
 const Modal: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {isModalOpen, modalType} = useSelector((state: RootState) => state.modal)
+  const {isModalOpen, modalType} = useSelector((state: RootState) => state.modal);
 
   if (!isModalOpen) return null;
 
   let content: React.ReactNode = null;
   switch (modalType) {
     case "REGISTER":
-      // TODO: Replace with Register Component
-      content = <AddJob/>;
+      content = <Register/>;
       break;
     case "LOGIN":
-      // TODO: Replace with Login component
-      content = <AddJob/>;
+      content = <Login/>;
       break;
     case "ADD_JOB":
       content = <AddJob/>;
