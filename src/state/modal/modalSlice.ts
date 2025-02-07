@@ -1,8 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {ModalTypes} from "../../components/NavBar/Interfaces.ts";
 
-interface ModalState {
+export interface ModalState {
   isModalOpen: boolean;
-  modalType: "REGISTER" | "LOGIN" | "ADD_JOB" | null;
+  modalType: ModalTypes;
 }
 
 const initialState: ModalState = {
