@@ -18,6 +18,7 @@ const JobItem: React.FC<JobItemProps> = ({job, index}) => {
     {name: "progression", label: "Progression"},
     {name: "requestedSalary", label: "Requested Salary"},
     {name: "companyWebsite", label: "Company Website", isLink: true},
+    {name: "generalInfo", label: "General Info"},
     {name: "jobAd", label: "Job Ad", isLink: true, linkText: "View Ad"},
   ];
 

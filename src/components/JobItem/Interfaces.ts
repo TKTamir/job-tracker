@@ -2,6 +2,7 @@ export interface IJobItem {
   applicationDate: string;
   companyName: string;
   companyWebsite: string;
+  generalInfo: string;
   jobAd: string;
   positionName: string;
   progression: string;
