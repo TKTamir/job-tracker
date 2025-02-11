@@ -33,7 +33,7 @@ export const loginUserAPI = async (userData: LoginData) => {
 };
 
 export const logoutUserAPI = () => {
-  localStorage.removeItem("user");
+  localStorage.removeItem("token");
 };
 
 export const createJobAPI = async (jobData: Partial<IJobItem>) => {
