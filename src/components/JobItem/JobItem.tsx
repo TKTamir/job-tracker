@@ -58,24 +58,22 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
         </>
       ) : (
         <>
-          <h3 className="m-2 text-xl font-bold">{job.companyName}</h3>
+          <h3 className="m-2 text-xl font-bold">{editedJob.companyName}</h3>
           <ul className="list-disc pl-5">
             {fields.map((field) => (
               <li key={field.name}>
                 {field.label}: {" "}
                 {field.isLink ? (
                   <a
-                    href={job[field.name as keyof IJobItem] as string}
+                    href={editedJob[field.name as keyof IJobItem] as string}
                     target="_blank"
                     rel="nopener noreferrer"
                     className="text-blue-500 hover:text-blue-800 focus:outline-none"
                   >
-                    {field.linkText
-                      ? field.linkText
-                      : (job[field.name as keyof IJobItem] as string)}
+                    {field.linkText}
                   </a>
                 ) : (
-                  job[field.name as keyof IJobItem]
+                  editedJob[field.name as keyof IJobItem]
                 )}
               </li>
             ))}
