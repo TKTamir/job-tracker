@@ -1,4 +1,5 @@
 export interface IJobItem {
+  id?: number;
   applicationDate: string;
   companyName: string;
   companyWebsite: string;
