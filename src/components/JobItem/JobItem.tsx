@@ -5,7 +5,7 @@ import {updateJob} from "../../state/job/jobSlice";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
-const JobItem: React.FC<JobItemProps> = ({job, index}) => {
+const JobItem: React.FC<JobItemProps> = ({job}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedJob, setEditedJob] = useState<IJobItem>(job)
@@ -28,13 +28,13 @@ const JobItem: React.FC<JobItemProps> = ({job, index}) => {
   };
 
   const handleSave = () => {
-    dispatch(updateJob({index, updatedJob: editedJob}));
+    dispatch(updateJob(editedJob));
     setIsEditing(false);
   };
 
 
   return (
-    <div className="JobItem p-4 border border-gray-300 rounded-md shadow-md mb-4">
+    <div className="JobItem p-4 border border-gray-300 rounded-md shadow-md mb-4" key={job.id}>
       {isEditing ? (
         <>
           {fields.map((field) => (

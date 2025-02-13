@@ -24,8 +24,8 @@ const JobsList: React.FC = () => {
       {filteredJobs.length === 0 ? (
         <p className="text-gray-500">No jobs found.</p>
       ) : (
-        filteredJobs.map((job, index) => (
-          <JobItem key={index} job={job} index={index}/>
+        filteredJobs.map((job) => (
+          <JobItem key={job.id} job={job}/>
         ))
       )}
     </div>
