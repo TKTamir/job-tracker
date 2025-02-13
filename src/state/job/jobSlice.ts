@@ -47,9 +47,9 @@ export const addJob = createAsyncThunk(
 
 export const updateJob = createAsyncThunk(
   "job/updateJob",
-  async ({id, jobData}: { id: number, jobData: Partial<IJobItem> }, {rejectWithValue}) => {
+  async (jobData: Partial<IJobItem>, {rejectWithValue}) => {
     try {
-      return await updateJobAPI(id, jobData);
+      return await updateJobAPI(jobData);
     } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);

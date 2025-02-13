@@ -76,9 +76,9 @@ export const getJobByIdAPI = async (id: number) => {
   return response.json();
 };
 
-export const updateJobAPI = async (id: number, jobData: Partial<IJobItem>) => {
-  const response = await fetch(`${API_BASE_URL}/jobs${id}`, {
-    method: "POST",
+export const updateJobAPI = async (jobData: Partial<IJobItem>) => {
+  const response = await fetch(`${API_BASE_URL}/jobs/${jobData.id}`, {
+    method: "PUT",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(jobData),
   });

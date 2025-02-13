@@ -13,5 +13,4 @@ export interface IJobItem {
 
 export interface JobItemProps {
   job: IJobItem;
-  index: number;
 }
