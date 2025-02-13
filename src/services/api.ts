@@ -91,7 +91,7 @@ export const updateJobAPI = async (jobData: Partial<IJobItem>) => {
 };
 
 export const deleteJobAPI = async (id: number) => {
-  const response = await fetch(`${API_BASE_URL}/jobs/:${id}`, {
+  const response = await fetch(`${API_BASE_URL}/jobs/${id}`, {
     method: "DELETE",
     headers: {"Content-Type": "application/json"},
   });
