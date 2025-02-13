@@ -1,13 +1,15 @@
 import React, {useState} from "react";
 import {IJobItem} from "../JobItem/Interfaces.ts";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../state/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../state/store.ts";
 import {addJob} from "../../state/job/jobSlice.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 
 
 const AddJob: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const {status, error} = useSelector((state: RootState) => state.jobs);
+
   const [jobData, setJobData] = useState<IJobItem>({
     applicationDate: "",
     companyName: "",
@@ -27,26 +29,30 @@ const AddJob: React.FC = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!jobData.companyName || !jobData.positionName) {
       alert("Company Name and Position are required.");
       return;
     }
 
-    dispatch(addJob(jobData));
-    setJobData({
-      applicationDate: "",
-      companyName: "",
-      companyWebsite: "",
-      generalInfo: "",
-      jobAd: "",
-      positionName: "",
-      progression: "",
-      requestedSalary: "",
-      status: "",
-    });
-    dispatch(closeModal());
+    try {
+      await dispatch(addJob(jobData)).unwrap();
+      setJobData({
+        applicationDate: "",
+        companyName: "",
+        companyWebsite: "",
+        generalInfo: "",
+        jobAd: "",
+        positionName: "",
+        progression: "",
+        requestedSalary: "",
+        status: "",
+      });
+      dispatch(closeModal());
+    } catch (error) {
+      console.error("Failed to add job: ", error);
+    }
   };
 
   return (
@@ -80,7 +86,11 @@ const AddJob: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        <button type="submit">Save Job</button>
+        {status === "loading" && <p className="text-blue-500">Saving job...</p>}
+        {error && <p className="text-red-500">Error: {error}</p>}
+        <button type="submit">
+          {status === "loading" ? "Saving..." : "Save Job"}
+        </button>
       </form>
     </div>
   )
