@@ -1,14 +1,15 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
-import {updateJob} from "../../state/job/jobSlice";
+import {deleteJob, updateJob} from "../../state/job/jobSlice";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
 const JobItem: React.FC<JobItemProps> = ({job}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editedJob, setEditedJob] = useState<IJobItem>(job)
+  const [editedJob, setEditedJob] = useState<Partial<IJobItem>>(job);
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   const fields = [
     {name: "companyName", label: "Company Name"},
@@ -24,14 +25,23 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target;
-    setEditedJob((prev: IJobItem) => ({...prev, [name]: value}));
+    if (!name || !value) return;
+    setEditedJob((prev: Partial<IJobItem>) => ({...prev, [name]: value}));
   };
 
   const handleSave = () => {
+    if (!editedJob) return;
     dispatch(updateJob(editedJob));
     setIsEditing(false);
   };
 
+  const handleDelete = () => {
+    if (!job.id) return;
+    dispatch(deleteJob(job.id));
+    setIsDeleted(true);
+  };
+
+  if (isDeleted) return null;
 
   return (
     <div className="JobItem p-4 border border-gray-300 rounded-md shadow-md mb-4" key={job.id}>
@@ -58,7 +68,7 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
         </>
       ) : (
         <>
-          <h3 className="m-2 text-xl font-bold">{editedJob.companyName}</h3>
+          <h3 className="m-2 text-xl font-bold">{editedJob?.companyName}</h3>
           <ul className="list-disc pl-5">
             {fields.map((field) => (
               <li key={field.name}>
@@ -78,15 +88,23 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
               </li>
             ))}
           </ul>
-          <button
-            onClick={() => {
-              setIsEditing(true);
-              setEditedJob(job);
-            }}
-            className="bg-blue-600 text-white p-2 rounded mt-2"
-          >
-            Edit
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={() => {
+                setIsEditing(true);
+                setEditedJob(job);
+              }}
+              className="bg-blue-600 text-white p-2 rounded mt-2"
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 text-white p-2 rounded mt-2"
+            >
+              Delete
+            </button>
+          </div>
         </>
       )}
     </div>
