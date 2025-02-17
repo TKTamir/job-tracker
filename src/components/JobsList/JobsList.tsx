@@ -1,20 +1,14 @@
-import React, {useEffect} from "react";
+import React from "react";
 import JobItem from "../JobItem/JobItem.tsx";
-import {AppDispatch, RootState} from "../../state/store.ts";
-import {useDispatch, useSelector} from "react-redux";
-import {fetchJobs} from "../../state/job/jobSlice.ts";
+import {RootState} from "../../state/store.ts";
+import {useSelector} from "react-redux";
 
 const JobsList: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const {jobsList, status, error} = useSelector((state: RootState) => state.jobs);
 
   const searchQuery = useSelector((state: RootState) => state.search.query);
 
   const filteredJobs = jobsList.filter(job => job?.companyName?.toLowerCase().includes(searchQuery?.toLowerCase()));
-
-  useEffect(() => {
-    dispatch(fetchJobs());
-  }, [dispatch]);
 
   return (
     <div className="JobsList">
