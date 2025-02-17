@@ -5,6 +5,7 @@ import {closeModal} from "../../state/modal/modalSlice.ts";
 import AddJob from "../AddJob/AddJob.tsx";
 import Register from "../Register/Register.tsx";
 import Login from "../Login/Login.tsx";
+import ConfirmAlert from "../ConfirmAlert/ConfirmAlert.tsx";
 
 const Modal: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -12,7 +13,8 @@ const Modal: React.FC = () => {
 
   if (!isModalOpen) return null;
 
-  let content: React.ReactNode = null;
+  let content: React.ReactNode;
+
   switch (modalType) {
     case "REGISTER":
       content = <Register/>;
@@ -22,6 +24,9 @@ const Modal: React.FC = () => {
       break;
     case "ADD_JOB":
       content = <AddJob/>;
+      break;
+    case "CONFIRM_ALERT":
+      content = <ConfirmAlert/>;
       break;
     default:
       content = null;
