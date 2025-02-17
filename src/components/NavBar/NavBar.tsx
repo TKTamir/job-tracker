@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   const handleOpenModal = (modalType: ModalTypes) => {
-    dispatch(openModal(modalType));
+    dispatch(openModal({modalType}));
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

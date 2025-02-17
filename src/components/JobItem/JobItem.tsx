@@ -1,8 +1,9 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
-import {deleteJob, updateJob} from "../../state/job/jobSlice";
+import {updateJob} from "../../state/job/jobSlice";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
+import {openModal} from "../../state/modal/modalSlice.ts";
 
 
 const JobItem: React.FC<JobItemProps> = ({job}) => {
@@ -37,7 +38,7 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
 
   const handleDelete = () => {
     if (!job.id) return;
-    dispatch(deleteJob(job.id));
+    dispatch(openModal({modalType: "CONFIRM_ALERT", modalProps: job.id}));
     setIsDeleted(true);
   };
 
