@@ -9,6 +9,13 @@ const ConfirmAlert: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const modalProps = useSelector((state: RootState) => state.modal.modalProps);
 
+  const handleDeleteJob = () => {
+    const jobId = modalProps;
+    if (!jobId) return;
+
+    dispatch(deleteJob(jobId));
+    dispatch(closeModal());
+  };
 
   return (
     <div className="ConfirmAlert">
@@ -16,11 +23,7 @@ const ConfirmAlert: React.FC = () => {
       <div className="flex justify-end gap-2 mt-4">
         <button
           className="bg-red-500 text-white px-4 py-2 rounded"
-          onClick={() => {
-            if (!modalProps) return;
-            dispatch(deleteJob(modalProps));
-            dispatch(closeModal());
-          }}
+          onClick={handleDeleteJob}
         >
           Yes, Delete
         </button>
