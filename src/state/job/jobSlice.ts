@@ -98,7 +98,7 @@ const jobSlice = createSlice({
       })
       .addCase(addJob.fulfilled, (state, action: PayloadAction<IJobItem>) => {
         state.status = "idle";
-        state.jobsList.push(action.payload)
+        state.jobsList.push(action.payload);
       })
       .addCase(addJob.rejected, (state, action) => {
         state.status = "failed";

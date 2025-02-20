@@ -47,7 +47,7 @@ export const createJobAPI = async (jobData: Partial<IJobItem>) => {
     throw new Error(response.statusText || "Failed to add job");
   }
   const serverResponse = await response.json();
-  return {...jobData, ...serverResponse};
+  return serverResponse.job || serverResponse;
 };
 
 export const getJobsAPI = async () => {
@@ -88,7 +88,7 @@ export const updateJobAPI = async (jobData: Partial<IJobItem>) => {
   }
 
   const serverResponse = await response.json();
-  return {...jobData, ...serverResponse};
+  return serverResponse.job || serverResponse;
 };
 
 export const deleteJobAPI = async (id: number) => {
