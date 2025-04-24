@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {jwtDecode} from "jwt-decode";
 import {loginUserAPI, logoutUserAPI, registerUserAPI} from "../../services/api.ts";
 import {UserData} from "../../components/Register/Interfaces.ts";
 import {LoginData} from "../../components/Login/Interfaces.ts";
@@ -7,6 +8,12 @@ interface User {
   id: number;
   email: string;
   token: string;
+}
+
+interface DecodedToken {
+  id: number;
+  email: string;
+  exp: number;
 }
 
 interface AuthState {
@@ -62,6 +69,33 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       logoutUserAPI();
     },
+    loadUserFromToken: (state) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decoded: DecodedToken = jwtDecode(token);
+          const isExpired = decoded.exp * 1000 < Date.now();
+
+          if (!isExpired) {
+            state.user = {
+              id: decoded.id,
+              email: decoded.email,
+              token,
+            };
+            state.isAuthenticated = true;
+          } else {
+            localStorage.removeItem("token");
+            state.user = null;
+            state.isAuthenticated = false;
+          }
+        } catch (err) {
+          console.error("Invalid token format", err);
+          localStorage.removeItem("token");
+          state.user = null;
+          state.isAuthenticated = false;
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -96,5 +130,5 @@ const authSlice = createSlice({
   }
 });
 
-export const {logoutUser} = authSlice.actions;
+export const {logoutUser, loadUserFromToken} = authSlice.actions;
 export default authSlice.reducer;
