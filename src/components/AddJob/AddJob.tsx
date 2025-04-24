@@ -4,23 +4,31 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../state/store.ts";
 import {addJob} from "../../state/job/jobSlice.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
+import {useAuthUser} from "../../hooks/useAuthUser.ts";
 
 
 const AddJob: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {status, error} = useSelector((state: RootState) => state.jobs);
+  const user = useAuthUser();
 
   const [jobData, setJobData] = useState<IJobItem>({
     applicationDate: "",
     companyName: "",
     companyWebsite: "",
     generalInfo: "",
+    id: null,
     jobAd: "",
     positionName: "",
     progression: "",
     requestedSalary: "",
     status: "",
+    userId: user?.id ?? null,
   });
+
+  if (!user) {
+    return <p>You must be logged in to add a job.</p>;
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setJobData({
@@ -37,17 +45,19 @@ const AddJob: React.FC = () => {
     }
 
     try {
-      await dispatch(addJob(jobData)).unwrap();
+      await dispatch(addJob({...jobData, userId: user.id})).unwrap();
       setJobData({
         applicationDate: "",
         companyName: "",
         companyWebsite: "",
         generalInfo: "",
+        id: null,
         jobAd: "",
         positionName: "",
         progression: "",
         requestedSalary: "",
         status: "",
+        userId: null,
       });
       dispatch(closeModal());
     } catch (error) {
