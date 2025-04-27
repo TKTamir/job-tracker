@@ -51,7 +51,7 @@ const JobsList: React.FC = () => {
         <p className="text-gray-500">No jobs found.</p>
       ) : (
         filteredJobs.map((job) => (
-          <JobItem key={job.id} job={job}/>
+          <JobItem key={job.id} job={job} searchQuery={searchQuery}/>
         ))
       )}
     </div>
