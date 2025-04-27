@@ -12,7 +12,17 @@ const JobsList: React.FC = () => {
 
   if (!user) return;
 
-  const searchableFields: JobItemKeys = ["applicationDate", "companyName", "companyWebsite", "generalInfo", "jobAd", "positionName", "progression", "requestedSalary", "status"];
+  const searchableFields: JobItemKeys = [
+    "applicationDate",
+    "companyName",
+    "companyWebsite",
+    "generalInfo",
+    "jobAd",
+    "positionName",
+    "progression",
+    "requestedSalary",
+    "status"
+  ];
 
   const filteredJobs = jobsList.filter((job) => {
     if (!searchQuery) return true;
