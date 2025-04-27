@@ -14,6 +14,7 @@ export interface IJobItem {
 
 export interface JobItemProps {
   job: IJobItem;
+  searchQuery: string;
 }
 
 export type JobItemKeys = (keyof Omit<IJobItem, 'id' | 'userId'>)[];
