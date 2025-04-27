@@ -1,15 +1,18 @@
 import React, {useEffect} from "react";
+import {useDispatch} from "react-redux";
 import JobsList from "../JobsList/JobsList.tsx";
 import {fetchJobs} from "../../state/job/jobSlice.ts";
-import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
+import {useAuthUser} from "../../hooks/useAuthUser.ts";
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const user = useAuthUser();
 
   useEffect(() => {
-    dispatch(fetchJobs());
-  }, [dispatch]);
+    if (!user || !user.id) return
+    dispatch(fetchJobs(user.id));
+  }, [dispatch, user]);
 
   return (
     <div className="Dashboard">
