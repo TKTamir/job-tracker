@@ -2,11 +2,12 @@ import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "../../state/store.ts";
 import {updateJob} from "../../state/job/jobSlice";
-import {IJobItem, JobItemProps} from "./Interfaces.ts";
 import {openModal} from "../../state/modal/modalSlice.ts";
+import {highlightText} from "../../utils/text/highlightText.tsx";
+import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
-const JobItem: React.FC<JobItemProps> = ({job}) => {
+const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedJob, setEditedJob] = useState<Partial<IJobItem>>(job);
@@ -54,7 +55,7 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
               <input
                 type="text"
                 name={field.name}
-                value={editedJob[field.name as keyof IJobItem] as string}
+                value={editedJob[field.name as keyof IJobItem] as string || ""}
                 onChange={handleChange}
                 className="border p-2 rounded w-full"
               />
@@ -69,22 +70,27 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
         </>
       ) : (
         <>
-          <h3 className="m-2 text-xl font-bold">{editedJob?.companyName}</h3>
+          <h3 className="m-2 text-xl font-bold">
+            {highlightText(editedJob.companyName as string, searchQuery)}
+          </h3>
           <ul className="list-disc pl-5">
             {fields.map((field) => (
               <li key={field.name}>
-                {field.label}: {" "}
+                {field.label}:{" "}
                 {field.isLink ? (
                   <a
                     href={editedJob[field.name as keyof IJobItem] as string}
                     target="_blank"
-                    rel="nopener noreferrer"
+                    rel="noopener noreferrer"
                     className="text-blue-500 hover:text-blue-800 focus:outline-none"
                   >
                     {field.linkText}
                   </a>
                 ) : (
-                  editedJob[field.name as keyof IJobItem]
+                  highlightText(
+                    editedJob[field.name as keyof IJobItem] as string,
+                    searchQuery
+                  )
                 )}
               </li>
             ))}
@@ -111,5 +117,6 @@ const JobItem: React.FC<JobItemProps> = ({job}) => {
     </div>
   );
 };
+
 
 export default JobItem;
