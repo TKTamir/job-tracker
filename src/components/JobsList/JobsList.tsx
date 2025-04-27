@@ -1,14 +1,19 @@
 import React from "react";
+import {useSelector} from "react-redux";
 import JobItem from "../JobItem/JobItem.tsx";
 import {RootState} from "../../state/store.ts";
-import {useSelector} from "react-redux";
+import {useAuthUser} from "../../hooks/useAuthUser.ts";
 
 const JobsList: React.FC = () => {
   const {jobsList, status, error} = useSelector((state: RootState) => state.jobs);
-
+  const user = useAuthUser();
   const searchQuery = useSelector((state: RootState) => state.search.query);
 
-  const filteredJobs = jobsList.filter(job => job?.companyName?.toLowerCase().includes(searchQuery?.toLowerCase()));
+  if (!user) return;
+
+  const filteredJobs = jobsList?.filter(job => job?.companyName?.toLowerCase().includes(searchQuery?.toLowerCase()));
+
+  if (!filteredJobs) return;
 
   return (
     <div className="JobsList">
