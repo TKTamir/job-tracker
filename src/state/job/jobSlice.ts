@@ -1,6 +1,6 @@
-import {IJobItem} from "../../components/JobItem/Interfaces.ts";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createJobAPI, deleteJobAPI, getJobsAPI, updateJobAPI} from "../../services/api.ts";
+import {IJobItem} from "../../components/JobItem/Interfaces.ts";
 
 interface JobState {
   jobsList: IJobItem[];
@@ -16,9 +16,9 @@ const initialState: JobState = {
 
 export const fetchJobs = createAsyncThunk(
   "job/fetchJobs",
-  async (_, {rejectWithValue}) => {
+  async (userId: number, {rejectWithValue}) => {
     try {
-      return await getJobsAPI();
+      return await getJobsAPI(userId);
     } catch (error: unknown) {
       if (error instanceof Error) {
         return rejectWithValue(error.message);
