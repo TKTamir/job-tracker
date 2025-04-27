@@ -2,10 +2,10 @@ import {UserData} from "../components/Register/Interfaces.ts";
 import {LoginData} from "../components/Login/Interfaces.ts";
 import {IJobItem} from "../components/JobItem/Interfaces.ts";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export const registerUserAPI = async (userData: UserData) => {
-  const response = await fetch(`${API_BASE_URL}/users/register`, {
+  const response = await fetch(`${apiBaseUrl}/users/register`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(userData),
@@ -19,7 +19,8 @@ export const registerUserAPI = async (userData: UserData) => {
 };
 
 export const loginUserAPI = async (userData: LoginData) => {
-  const response = await fetch(`${API_BASE_URL}/users/login`, {
+  console.log(`${apiBaseUrl}/users/login`, 'api')
+  const response = await fetch(`${apiBaseUrl}/users/login`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(userData),
@@ -37,7 +38,7 @@ export const logoutUserAPI = () => {
 };
 
 export const createJobAPI = async (jobData: Partial<IJobItem>) => {
-  const response = await fetch(`${API_BASE_URL}/jobs`, {
+  const response = await fetch(`${apiBaseUrl}/jobs`, {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(jobData),
@@ -51,7 +52,7 @@ export const createJobAPI = async (jobData: Partial<IJobItem>) => {
 };
 
 export const getJobsAPI = async (userId: number) => {
-  const response = await fetch(`${API_BASE_URL}/jobs?userId=${userId}`, {
+  const response = await fetch(`${apiBaseUrl}/jobs?userId=${userId}`, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
   });
@@ -64,7 +65,7 @@ export const getJobsAPI = async (userId: number) => {
 };
 
 export const getJobByIdAPI = async (id: number) => {
-  const response = await fetch(`${API_BASE_URL}/jobs/:${id}`, {
+  const response = await fetch(`${apiBaseUrl}/jobs/:${id}`, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
   });
@@ -77,7 +78,7 @@ export const getJobByIdAPI = async (id: number) => {
 };
 
 export const updateJobAPI = async (jobData: Partial<IJobItem>) => {
-  const response = await fetch(`${API_BASE_URL}/jobs/${jobData.id}`, {
+  const response = await fetch(`${apiBaseUrl}/jobs/${jobData.id}`, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
     body: JSON.stringify(jobData),
@@ -92,7 +93,7 @@ export const updateJobAPI = async (jobData: Partial<IJobItem>) => {
 };
 
 export const deleteJobAPI = async (id: number) => {
-  const response = await fetch(`${API_BASE_URL}/jobs/${id}`, {
+  const response = await fetch(`${apiBaseUrl}/jobs/${id}`, {
     method: "DELETE",
     headers: {"Content-Type": "application/json"},
   });
