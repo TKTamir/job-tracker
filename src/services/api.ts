@@ -50,8 +50,8 @@ export const createJobAPI = async (jobData: Partial<IJobItem>) => {
   return serverResponse.job || serverResponse;
 };
 
-export const getJobsAPI = async () => {
-  const response = await fetch(`${API_BASE_URL}/jobs`, {
+export const getJobsAPI = async (userId: number) => {
+  const response = await fetch(`${API_BASE_URL}/jobs?userId=${userId}`, {
     method: "GET",
     headers: {"Content-Type": "application/json"},
   });
