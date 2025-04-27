@@ -2,6 +2,7 @@ import React from "react";
 import {useSelector} from "react-redux";
 import JobItem from "../JobItem/JobItem.tsx";
 import {RootState} from "../../state/store.ts";
+import {JobItemKeys} from "../JobItem/Interfaces.ts";
 import {useAuthUser} from "../../hooks/useAuthUser.ts";
 
 const JobsList: React.FC = () => {
@@ -11,7 +12,23 @@ const JobsList: React.FC = () => {
 
   if (!user) return;
 
-  const filteredJobs = jobsList?.filter(job => job?.companyName?.toLowerCase().includes(searchQuery?.toLowerCase()));
+  const searchableFields: JobItemKeys = ["applicationDate", "companyName", "companyWebsite", "generalInfo", "jobAd", "positionName", "progression", "requestedSalary", "status"];
+
+  const filteredJobs = jobsList.filter((job) => {
+    if (!searchQuery) return true;
+
+    const keywords = searchQuery.toLowerCase().split(" ").filter(Boolean);
+
+    return keywords.every((keyword) =>
+      searchableFields.some((field) => {
+        const fieldValue = job[field];
+        if (typeof fieldValue === 'string') {
+          return fieldValue.toLowerCase().includes(keyword);
+        }
+        return false
+      })
+    );
+  });
 
   if (!filteredJobs) return;
 
