@@ -1,134 +1,57 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {jwtDecode} from "jwt-decode";
-import {loginUserAPI, logoutUserAPI, registerUserAPI} from "../../services/api.ts";
-import {UserData} from "../../components/Register/Interfaces.ts";
-import {LoginData} from "../../components/Login/Interfaces.ts";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {authApi} from '../api/authApi';
+import {RootState} from "../store.ts";
+import {AuthState, User} from "../types/auth.ts";
+import {decodeTokenToUser} from "../../utils/auth/authHelpers.ts";
 
-interface User {
-  id: number;
-  email: string;
-  token: string;
-}
+const token = localStorage.getItem('token');
 
-interface DecodedToken {
-  id: number;
-  email: string;
-  exp: number;
-}
-
-interface AuthState {
-  user: User | null;
-  isAuthenticated: boolean;
-  status: "idle" | "loading" | "failed";
-  error: string | null;
-}
+let user: User | null = null;
 
 const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
-  status: "idle",
-  error: null,
+  user,
+  token,
 };
 
-export const registerUser = createAsyncThunk(
-  "auth/registerUser",
-  async (userData: UserData, {rejectWithValue}) => {
-    try {
-      return await registerUserAPI(userData);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      } else {
-        console.log('Unknown error: ', error);
-      }
-    }
+if (token) {
+  try {
+    user = decodeTokenToUser(token);
+  } catch (error) {
+    console.error("Invalid token in localStorage", error);
   }
-);
-
-export const loginUser = createAsyncThunk(
-  "auth/loginUser",
-  async (loginData: LoginData, {rejectWithValue}) => {
-    try {
-      return await loginUserAPI(loginData);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return rejectWithValue(error.message);
-      } else {
-        console.log('Unknown error: ', error);
-      }
-    }
-  }
-);
+}
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
-    logoutUser: (state) => {
+    logout: (state) => {
       state.user = null;
-      state.isAuthenticated = false;
-      logoutUserAPI();
-    },
-    loadUserFromToken: (state) => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const decoded: DecodedToken = jwtDecode(token);
-          const isExpired = decoded.exp * 1000 < Date.now();
-
-          if (!isExpired) {
-            state.user = {
-              id: decoded.id,
-              email: decoded.email,
-              token,
-            };
-            state.isAuthenticated = true;
-          } else {
-            localStorage.removeItem("token");
-            state.user = null;
-            state.isAuthenticated = false;
-          }
-        } catch (err) {
-          console.error("Invalid token format", err);
-          localStorage.removeItem("token");
-          state.user = null;
-          state.isAuthenticated = false;
-        }
-      }
+      localStorage.removeItem('token');
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(registerUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.user = action.payload;
-        state.isAuthenticated = true;
-        state.status = "idle";
-        localStorage.setItem("token", action.payload.token);
-      })
-      .addCase(registerUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload as unknown as string;
-      })
-      .addCase(loginUser.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<User>) => {
-        state.user = action.payload;
-        state.isAuthenticated = true;
-        state.status = "idle";
-        localStorage.setItem("token", action.payload.token);
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload as unknown as string;
-      })
-  }
+      .addMatcher(
+        authApi.endpoints.login.matchFulfilled,
+        (state, {payload}: PayloadAction<User>) => {
+          state.user = payload;
+          state.token = payload.token;
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.register.matchFulfilled,
+        (state, {payload}: PayloadAction<User>) => {
+          state.user = payload;
+          state.token = payload.token;
+        }
+      )
+  },
 });
 
-export const {logoutUser, loadUserFromToken} = authSlice.actions;
+export const selectIsAuthenticated = (state: RootState) => state.auth.user !== null;
+
+
+export const {logout} = authSlice.actions;
+
 export default authSlice.reducer;
