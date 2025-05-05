@@ -1,24 +1,7 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQuery} from "./baseQuery.ts";
-
-interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-interface RegisterCredentials {
-  email: string;
-  password: string;
-  name: string;
-}
-
-interface User {
-  id: number;
-  email: string;
-  name: string;
-  token: string;
-}
-
+import {AuthResponse, LoginCredentials, RegisterCredentials, User} from "../types/auth.ts";
+import {decodeTokenToUser, handleAuthQuery} from "../../utils/auth/authHelpers.ts";
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -30,16 +13,22 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials,
       }),
+      transformResponse: (response: AuthResponse): User => decodeTokenToUser(response.token),
+      onQueryStarted: async (_, {queryFulfilled}) => {
+        await handleAuthQuery(queryFulfilled);
+      },
     }),
+
     register: builder.mutation<User, RegisterCredentials>({
       query: (credentials) => ({
         url: '/users/register',
         method: 'POST',
         body: credentials,
       }),
-    }),
-    getCurrentUser: builder.query<User, void>({
-      query: () => 'auth/me',
+      transformResponse: (response: AuthResponse): User => decodeTokenToUser(response.token),
+      onQueryStarted: async (_, {queryFulfilled}) => {
+        await handleAuthQuery(queryFulfilled);
+      },
     }),
   }),
 });
@@ -47,5 +36,4 @@ export const authApi = createApi({
 export const {
   useLoginMutation,
   useRegisterMutation,
-  useGetCurrentUserQuery,
 } = authApi;
