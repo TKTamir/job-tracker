@@ -1,18 +1,20 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../state/store.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
-import {registerUser} from "../../state/auth/authSlice.ts";
+import {useRegisterMutation} from "../../state/api/authApi.ts";
+import {AppDispatch} from "../../state/store.ts";
 import {UserData} from "./Interfaces.ts";
 
 
 const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [register, {isLoading}] = useRegisterMutation();
   const [formData, setFormData] = useState<UserData>({
     name: "",
     email: "",
     password: "",
   });
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -24,11 +26,9 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const user = await dispatch(registerUser(formData)).unwrap();
+      await register(formData).unwrap();
 
       dispatch(closeModal());
-
-      console.log("User logged in:", user);
 
     } catch (error) {
       console.error("Registration failed:", error);
@@ -66,7 +66,7 @@ const Register: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        <button type="submit">Register</button>
+        <button type="submit">{isLoading ? 'Registering...' : 'Register'}</button>
       </form>
     </div>
   )
