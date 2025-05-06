@@ -1,20 +1,25 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../state/store.ts";
-import {deleteJob} from "../../state/job/jobSlice.ts";
+import {useDeleteJobMutation} from "../../state/api/jobsApi.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
+import {AppDispatch, RootState} from "../../state/store.ts";
 
 
 const ConfirmAlert: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [deleteJob, {isLoading: isDeleting}] = useDeleteJobMutation();
   const modalProps = useSelector((state: RootState) => state.modal.modalProps);
 
-  const handleDeleteJob = () => {
+  const handleDelete = async () => {
     const jobId = modalProps;
-    if (!jobId) return;
+    if (!jobId || isDeleting) return;
 
-    dispatch(deleteJob(jobId));
-    dispatch(closeModal());
+    try {
+      await deleteJob(jobId).unwrap();
+      dispatch(closeModal());
+    } catch (error) {
+      console.error('Failed to delete job:', error);
+    }
   };
 
   return (
@@ -23,9 +28,9 @@ const ConfirmAlert: React.FC = () => {
       <div className="flex justify-end gap-2 mt-4">
         <button
           className="bg-red-500 text-white px-4 py-2 rounded"
-          onClick={handleDeleteJob}
+          onClick={handleDelete}
         >
-          Yes, Delete
+          {isDeleting ? 'Deleting...' : 'Delete'}
         </button>
         <button
           className="bg-gray-300 px-4 py-2 rounded"
