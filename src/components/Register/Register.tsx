@@ -5,7 +5,6 @@ import {useRegisterMutation} from "../../state/api/authApi.ts";
 import {AppDispatch} from "../../state/store.ts";
 import {UserData} from "./Interfaces.ts";
 
-
 const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [register, {isLoading}] = useRegisterMutation();
@@ -14,7 +13,6 @@ const Register: React.FC = () => {
     email: "",
     password: "",
   });
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
