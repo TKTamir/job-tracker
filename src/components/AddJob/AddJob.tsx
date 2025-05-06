@@ -2,15 +2,13 @@ import React, {useState} from "react";
 import {IJobItem} from "../JobItem/Interfaces.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../state/store.ts";
-import {addJob} from "../../state/job/jobSlice.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
-import {useAuthUser} from "../../hooks/useAuthUser.ts";
-
+import {useAddJobMutation} from "../../state/api/jobsApi.ts";
 
 const AddJob: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {status, error} = useSelector((state: RootState) => state.jobs);
-  const user = useAuthUser();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const [addJob, {isLoading}] = useAddJobMutation();
 
   const [jobData, setJobData] = useState<IJobItem>({
     applicationDate: "",
@@ -45,7 +43,7 @@ const AddJob: React.FC = () => {
     }
 
     try {
-      await dispatch(addJob({...jobData, userId: user.id})).unwrap();
+      await addJob({...jobData, userId: user.id}).unwrap();
       setJobData({
         applicationDate: "",
         companyName: "",
@@ -96,10 +94,8 @@ const AddJob: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        {status === "loading" && <p className="text-blue-500">Saving job...</p>}
-        {error && <p className="text-red-500">Error: {error}</p>}
         <button type="submit">
-          {status === "loading" ? "Saving..." : "Save Job"}
+          {isLoading ? "Saving..." : "Save Job"}
         </button>
       </form>
     </div>
