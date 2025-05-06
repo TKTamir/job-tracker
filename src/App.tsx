@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import './App.css'
 import Home from "./pages/Home/Home.tsx";
+import Footer from "./components/Footer/Footer.tsx";
 import {setUserFromToken} from "./state/auth/authSlice.ts";
 import {AppDispatch} from "./state/store.ts";
 
@@ -18,8 +19,11 @@ const App: React.FC = () => {
 
 
   return (
-    <div>
-      <Home/>
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-grow">
+        <Home/>
+      </div>
+      <Footer/>
     </div>
   )
 }
