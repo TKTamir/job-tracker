@@ -1,13 +1,12 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import JobItem from "../JobItem/JobItem.tsx";
-import {useAuthUser} from "../../hooks/useAuthUser.ts";
 import {useGetJobsQuery} from "../../state/api/jobsApi.ts";
 import {RootState} from "../../state/store.ts";
 import {JobItemKeys} from "../JobItem/Interfaces.ts";
 
 const JobsList: React.FC = () => {
-  const user = useAuthUser();
+  const user = useSelector((state: RootState) => state.auth.user);
   const searchQuery = useSelector((state: RootState) => state.search.query);
   const {data: jobs, isLoading, isError, error} = useGetJobsQuery(user?.id, {skip: !user?.id});
   if (!user) return;
