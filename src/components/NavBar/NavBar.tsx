@@ -1,15 +1,16 @@
 import React from "react";
-import Modal from "../Modal/Modal.tsx";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../state/store.ts";
+import Modal from "../Modal/Modal.tsx";
 import {openModal} from "../../state/modal/modalSlice.ts";
 import {setSearchQuery} from "../../state/search/searchSlice.ts";
+import {logout, selectIsAuthenticated} from "../../state/auth/authSlice.ts";
+import {AppDispatch} from "../../state/store.ts";
 import {ModalTypes} from "./Interfaces.ts";
-import {logoutUser} from "../../state/auth/authSlice.ts";
 
 const NavBar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+
 
   const handleOpenModal = (modalType: ModalTypes) => {
     dispatch(openModal({modalType}));
@@ -19,8 +20,12 @@ const NavBar: React.FC = () => {
     dispatch(setSearchQuery(e.target.value));
   };
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
+  const handleLogout = async () => {
+    try {
+      dispatch(logout());
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (
@@ -30,22 +35,23 @@ const NavBar: React.FC = () => {
         placeholder="Search"
         onChange={handleSearchChange}
       />
-      <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
+      {isAuthenticated && (
+        <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
+      )}
       <div className="UserButtons">
         {isAuthenticated ? (
-          <>
-            <button className="m-2" onClick={handleLogout}>Logout</button>
-          </>
+          <button className="m-2" onClick={handleLogout}>Logout</button>
         ) : (
           <>
-            <button className="m-2" onClick={() => handleOpenModal("REGISTER")}>Register</button>
+            <button className="m-2" onClick={() => handleOpenModal("REGISTER")}>Register
+            </button>
             <button className="m-2" onClick={() => handleOpenModal("LOGIN")}>Log in</button>
           </>
         )}
       </div>
       <Modal/>
     </div>
-  )
+  );
 }
 
 export default NavBar;
