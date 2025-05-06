@@ -1,8 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {authApi} from '../api/authApi';
+import {decodeTokenToUser} from "../../utils/auth/authHelpers.ts";
 import {RootState} from "../store.ts";
 import {AuthState, User} from "../types/auth.ts";
-import {decodeTokenToUser} from "../../utils/auth/authHelpers.ts";
 
 const token = localStorage.getItem('token');
 
@@ -29,6 +29,15 @@ const authSlice = createSlice({
       state.user = null;
       localStorage.removeItem('token');
     },
+    setUserFromToken: (state, action: PayloadAction<string>) => {
+      try {
+        const user = decodeTokenToUser(action.payload);
+        state.user = user;
+        state.token = user.token;
+      } catch (error) {
+        console.error('Failed to decode token in setUserFromToken', error);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -52,6 +61,6 @@ const authSlice = createSlice({
 export const selectIsAuthenticated = (state: RootState) => state.auth.user !== null;
 
 
-export const {logout} = authSlice.actions;
+export const {logout, setUserFromToken} = authSlice.actions;
 
 export default authSlice.reducer;
