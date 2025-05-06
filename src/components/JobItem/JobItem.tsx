@@ -1,17 +1,18 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../state/store.ts";
-import {updateJob} from "../../state/job/jobSlice";
-import {openModal} from "../../state/modal/modalSlice.ts";
 import {highlightText} from "../../utils/text/highlightText.tsx";
+import {useUpdateJobMutation} from "../../state/api/jobsApi.ts";
+import {openModal} from "../../state/modal/modalSlice.ts";
+import {AppDispatch} from "../../state/store.ts";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
 const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [updateJob, {isLoading}] = useUpdateJobMutation();
+
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedJob, setEditedJob] = useState<Partial<IJobItem>>(job);
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
 
   const fields = [
     {name: "companyName", label: "Company Name"},
@@ -33,17 +34,14 @@ const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
 
   const handleSave = () => {
     if (!editedJob) return;
-    dispatch(updateJob(editedJob));
+    updateJob(editedJob);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     if (!job.id) return;
     dispatch(openModal({modalType: "CONFIRM_ALERT", modalProps: job.id}));
-    setIsDeleted(true);
   };
-
-  if (isDeleted) return null;
 
   return (
     <div className="JobItem p-4 border border-gray-300 rounded-md shadow-md mb-4" key={job.id}>
@@ -65,7 +63,7 @@ const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
             onClick={handleSave}
             className="bg-blue-600 text-white p-2 rounded mt-2"
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </>
       ) : (
