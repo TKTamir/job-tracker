@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import {IJobItem} from "../JobItem/Interfaces.ts";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../state/store.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 import {useAddJobMutation} from "../../state/api/jobsApi.ts";
+import {AppDispatch, RootState} from "../../state/store.ts";
+import {IJobItem} from "../JobItem/Interfaces.ts";
 
 const AddJob: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
