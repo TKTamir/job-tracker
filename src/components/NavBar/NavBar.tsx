@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <div className="NavBar bg-blue-50 flex w-full m-0 justify-between">
+    <div className="NavBar flex w-full m-0 justify-between">
       <input
         className="m-2"
         placeholder="Search"
