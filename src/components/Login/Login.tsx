@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../state/store.ts";
 import {closeModal} from "../../state/modal/modalSlice.ts";
-import {loginUser} from "../../state/auth/authSlice.ts";
+import {useLoginMutation} from "../../state/api/authApi.ts";
+import {AppDispatch} from "../../state/store.ts";
 import {LoginData} from "./Interfaces.ts";
-
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [login, {isLoading}] = useLoginMutation();
   const [formData, setFormData] = useState<LoginData>({
     email: "",
     password: "",
@@ -24,12 +24,9 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     try {
-      const user = await dispatch(loginUser(formData)).unwrap();
+      await login(formData).unwrap();
 
       dispatch(closeModal());
-
-      console.log("User logged in:", user);
-
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -56,7 +53,7 @@ const Login: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">{isLoading ? 'Logging in...' : 'Log in'}</button>
       </form>
     </div>
   )
