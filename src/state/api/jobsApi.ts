@@ -8,7 +8,7 @@ export const jobsApi = createApi({
   baseQuery: baseQuery,
   tagTypes: ['Job'],
   endpoints: (builder) => ({
-    getJobs: builder.query<IJobItem[], number | undefined>({
+    getJobs: builder.query<IJobItem[], string | undefined>({
       query: (userId) => {
         const url = 'jobs';
         if (userId) {
@@ -34,7 +34,7 @@ export const jobsApi = createApi({
       }),
       invalidatesTags: ['Job'],
     }),
-    deleteJob: builder.mutation<{ success: boolean; id: number }, number>({
+    deleteJob: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
         url: `jobs/${id}`,
         method: 'DELETE',
