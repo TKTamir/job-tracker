@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import Modal from "../Modal/Modal.tsx";
 import {openModal} from "../../state/modal/modalSlice.ts";
@@ -29,8 +30,11 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="NavBar flex flex-row w-full justify-between m-0">
-      <button className="m-2">Dashboard</button>
+    <nav className="NavBar flex flex-row w-full justify-between m-0">
+      <div>
+        <Link to="/home" className="m-2">Home</Link>
+        <Link to="/dashboard" className="m-2">Dashboard</Link>
+      </div>
       {isAuthenticated ? (
         <div className="justify-end">
           <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
@@ -48,7 +52,7 @@ const Navbar: React.FC = () => {
         </div>
       )}
       <Modal/>
-    </div>
+    </nav>
   );
 }
 
