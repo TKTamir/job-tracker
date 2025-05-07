@@ -4,7 +4,7 @@ import {CardProps} from "./interfaces.ts";
 const Card: React.FC<CardProps> = ({icon, description, subtitle, title}) => {
 
   return (
-    <div className="Card flex flex-col h- 50 max-w-52">
+    <div className="Card flex flex-col max-w-52">
       <img alt="card-icon" src={icon}></img>
       <div className="flex flex-col">
         <h3 className="m-2 font-bold text-lg">{title}</h3>
