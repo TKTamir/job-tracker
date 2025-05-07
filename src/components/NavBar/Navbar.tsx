@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="NavBar flex flex-row w-full justify-between m-0">
       <div>
-        <Link to="/home" className="m-2">Home</Link>
+        <Link to="/" className="m-2">Home</Link>
         <Link to="/dashboard" className="m-2">Dashboard</Link>
       </div>
       {isAuthenticated ? (
