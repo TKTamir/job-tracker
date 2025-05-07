@@ -29,26 +29,24 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <div className="NavBar flex w-full m-0 justify-between">
-      <input
-        className="m-2"
-        placeholder="Search"
-        onChange={handleSearchChange}
-      />
-      {isAuthenticated && (
-        <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
-      )}
-      <div className="UserButtons">
-        {isAuthenticated ? (
+    <div className="NavBar flex flex-row w-full justify-between m-0">
+      <button className="m-2">Dashboard</button>
+      {isAuthenticated ? (
+        <div className="justify-end">
+          <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>+</button>
+          <input
+            className="m-2 w-20"
+            placeholder="Search"
+            onChange={handleSearchChange}
+          />
           <button className="m-2" onClick={handleLogout}>Logout</button>
-        ) : (
-          <>
-            <button className="m-2" onClick={() => handleOpenModal("REGISTER")}>Register
-            </button>
-            <button className="m-2" onClick={() => handleOpenModal("LOGIN")}>Log in</button>
-          </>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div>
+          <button className="m-2" onClick={() => handleOpenModal("REGISTER")}>Register</button>
+          <button className="m-2" onClick={() => handleOpenModal("LOGIN")}>Log in</button>
+        </div>
+      )}
       <Modal/>
     </div>
   );
