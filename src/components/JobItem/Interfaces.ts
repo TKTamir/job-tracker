@@ -3,13 +3,13 @@ export interface IJobItem {
   companyName: string;
   companyWebsite: string;
   generalInfo: string;
-  id: number | null;
   jobAd: string;
   positionName: string;
   progression: string;
   requestedSalary: string;
   status: string;
-  userId: number | null;
+  id?: string;
+  userId?: string;
 }
 
 export interface JobItemProps {

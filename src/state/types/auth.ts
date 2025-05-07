@@ -9,7 +9,7 @@ export interface AuthState {
 }
 
 export interface DecodedToken {
-  id: number;
+  id: string;
   email: string;
   name: string;
   exp: number;
@@ -28,7 +28,7 @@ export interface RegisterCredentials {
 }
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   name: string;
   token: string;
