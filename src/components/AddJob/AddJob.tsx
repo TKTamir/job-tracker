@@ -15,13 +15,12 @@ const AddJob: React.FC = () => {
     companyName: "",
     companyWebsite: "",
     generalInfo: "",
-    id: null,
     jobAd: "",
     positionName: "",
     progression: "",
     requestedSalary: "",
     status: "",
-    userId: user?.id ?? null,
+    userId: user?.id ?? "",
   });
 
   if (!user) {
@@ -49,13 +48,12 @@ const AddJob: React.FC = () => {
         companyName: "",
         companyWebsite: "",
         generalInfo: "",
-        id: null,
         jobAd: "",
         positionName: "",
         progression: "",
         requestedSalary: "",
         status: "",
-        userId: null,
+        userId: user?.id,
       });
       dispatch(closeModal());
     } catch (error) {
