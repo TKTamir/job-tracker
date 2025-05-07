@@ -7,7 +7,7 @@ import {logout, selectIsAuthenticated} from "../../state/auth/authSlice.ts";
 import {AppDispatch} from "../../state/store.ts";
 import {ModalTypes} from "./Interfaces.ts";
 
-const NavBar: React.FC = () => {
+const Navbar: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
@@ -52,4 +52,4 @@ const NavBar: React.FC = () => {
   );
 }
 
-export default NavBar;
+export default Navbar;
