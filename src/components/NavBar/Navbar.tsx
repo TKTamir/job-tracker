@@ -34,6 +34,7 @@ const Navbar: React.FC = () => {
       <div>
         <Link to="/" className="m-2">Home</Link>
         <Link to="/dashboard" className="m-2">Dashboard</Link>
+        <Link to="/jobapplications" className="m-2">Job Applications</Link>
       </div>
       {isAuthenticated ? (
         <div className="justify-end">
