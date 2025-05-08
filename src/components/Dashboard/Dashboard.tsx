@@ -18,7 +18,8 @@ const Dashboard: React.FC = () => {
         <h1 className="m-2 block">Dashboard</h1>
       </div>
       <div>
-        <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>Add New Application
+        <button className="m-2 hover:underline cursor-pointer" onClick={() => handleOpenModal("ADD_JOB")}>Add New
+          Application
         </button>
       </div>
       <div className="m-2 w-full">

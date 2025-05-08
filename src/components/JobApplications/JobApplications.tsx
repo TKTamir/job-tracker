@@ -56,7 +56,8 @@ const JobApplications: React.FC = () => {
   return (
     <div className="JobsList flex flex-col items-center">
       <h2 className="m-2">Job Applications</h2>
-      <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>Add New Application
+      <button className="m-2 hover:underline cursor-pointer" onClick={() => handleOpenModal("ADD_JOB")}>Add New
+        Application
       </button>
       {isLoading && <p>Loading jobs...</p>}
       {filteredJobs.length === 0 ? (
