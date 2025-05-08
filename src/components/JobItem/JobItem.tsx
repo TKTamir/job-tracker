@@ -7,12 +7,13 @@ import {AppDispatch} from "../../state/store.ts";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
-const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
+const JobItem: React.FC<JobItemProps> = ({job, searchQuery, mode}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [updateJob, {isLoading}] = useUpdateJobMutation();
-
-  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedJob, setEditedJob] = useState<Partial<IJobItem>>(job);
+
+  const isEditing = mode === "edit";
+  const isViewing = mode === "view";
 
   const fields = [
     {name: "companyName", label: "Company Name"},
@@ -35,17 +36,17 @@ const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
   const handleSave = () => {
     if (!editedJob) return;
     updateJob(editedJob);
-    setIsEditing(false);
   };
 
   const handleDelete = () => {
     if (!job.id) return;
-    dispatch(openModal({modalType: "CONFIRM_ALERT", modalProps: job.id}));
+    dispatch(openModal({modalType: "CONFIRM_ALERT", modalProps: job}));
   };
+
 
   return (
     <div className="JobItem p-4 border border-gray-300 rounded-md shadow-md mb-4" key={job.id}>
-      {isEditing ? (
+      {isEditing && (
         <>
           {fields.map((field) => (
             <div className="mb-2" key={field.name}>
@@ -66,7 +67,8 @@ const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
             {isLoading ? "Saving..." : "Save"}
           </button>
         </>
-      ) : (
+      )}
+      {isViewing && (
         <>
           <h3 className="m-2 text-xl font-bold">
             {highlightText(editedJob.companyName as string, searchQuery)}
@@ -96,7 +98,6 @@ const JobItem: React.FC<JobItemProps> = ({job, searchQuery}) => {
           <div className="flex justify-between">
             <button
               onClick={() => {
-                setIsEditing(true);
                 setEditedJob(job);
               }}
               className="bg-blue-600 text-white p-2 rounded mt-2"
