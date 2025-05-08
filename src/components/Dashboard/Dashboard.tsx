@@ -15,7 +15,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className="Dashboard flex flex-col items-center">
       <div className="justify-self-center">
-        <h1 className="m-2 block">Dashboard</h1>
+        <h1 className="m-2 font-bold text-xl">Dashboard</h1>
       </div>
       <div>
         <button className="m-2 hover:underline cursor-pointer" onClick={() => handleOpenModal("ADD_JOB")}>Add New
