@@ -8,10 +8,9 @@ import {AppDispatch, RootState} from "../../state/store.ts";
 const ConfirmAlert: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [deleteJob, {isLoading: isDeleting}] = useDeleteJobMutation();
-  const modalProps = useSelector((state: RootState) => state.modal.modalProps);
+  const jobId = useSelector((state: RootState) => state.modal.modalProps?.id);
 
   const handleDelete = async () => {
-    const jobId = modalProps;
     if (!jobId || isDeleting) return;
 
     try {
