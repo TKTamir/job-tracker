@@ -5,7 +5,7 @@ import {IJobItem} from "../../components/JobItem/Interfaces.ts";
 export interface ModalState {
   isModalOpen: boolean;
   modalType: ModalTypes
-  modalProps?: IJobItem["id"];
+  modalProps: IJobItem | undefined;
 }
 
 type OpenModalPayload = {
