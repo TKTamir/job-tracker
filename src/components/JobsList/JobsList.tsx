@@ -47,7 +47,7 @@ const JobsList: React.FC = () => {
   if (!filteredJobs) return;
 
   return (
-    <div className="JobsList">
+    <div className="JobsList flex flex-col items-center">
       <h2 className="m-2">JobList</h2>
       {isLoading && <p>Loading jobs...</p>}
       {filteredJobs.length === 0 ? (
