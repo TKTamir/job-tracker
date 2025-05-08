@@ -6,10 +6,11 @@ import AddJob from "../AddJob/AddJob.tsx";
 import Register from "../Register/Register.tsx";
 import Login from "../Login/Login.tsx";
 import ConfirmAlert from "../ConfirmAlert/ConfirmAlert.tsx";
+import JobItem from "../JobItem/JobItem.tsx";
 
 const Modal: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const {isModalOpen, modalType} = useSelector((state: RootState) => state.modal);
+  const {isModalOpen, modalType, modalProps} = useSelector((state: RootState) => state.modal);
 
   if (!isModalOpen) return null;
 
@@ -22,11 +23,22 @@ const Modal: React.FC = () => {
     case "LOGIN":
       content = <Login/>;
       break;
+    case "CONFIRM_ALERT":
+      content = <ConfirmAlert/>;
+      break;
     case "ADD_JOB":
       content = <AddJob/>;
       break;
-    case "CONFIRM_ALERT":
-      content = <ConfirmAlert/>;
+    case "VIEW_JOB":
+    case "EDIT_JOB":
+      if (modalProps) {
+        content = (
+          <JobItem
+            job={modalProps}
+            mode={modalType === "EDIT_JOB" ? "edit" : "view"}
+          />
+        );
+      }
       break;
     default:
       content = null;
