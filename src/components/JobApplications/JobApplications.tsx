@@ -28,22 +28,25 @@ const JobApplications: React.FC = () => {
 
   return (
     <div className="JobApplications p-4">
-      <div
-        className="grid grid-cols-4 gap-4 text-left items-start"
-      >
+      <div className="grid grid-cols-5 gap-4 font-semibold mb-2">
         {fields.map((field) => (
-          <div key={`header-${field.name}`} className="font-semibold">
-            {field.label}
-          </div>
+          <div key={`header-${field.name}`}>{field.label}</div>
         ))}
-        {jobs?.map((job: IJobItem) =>
-          fields.map((field) => (
+        <div>Actions</div>
+      </div>
+      {jobs?.map((job: IJobItem) => (
+        <div key={job.id} className="grid grid-cols-5 gap-4 items-center border-gray-200 border-b py-2">
+          {fields.map((field) => (
             <div key={`${job.id}-${field.name}`}>
               {job[field.name as keyof IJobItem] || "N/A"}
             </div>
-          ))
-        )}
-      </div>
+          ))}
+          <div className="flex gap-2">
+            <button className="text-blue-600 hover:underline cursor-pointer">Edit</button>
+            <button className="text-blue-600 hover:underline cursor-pointer">Details</button>
+          </div>
+        </div>
+      ))}
     </div>
   )
 }
