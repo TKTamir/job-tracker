@@ -1,10 +1,12 @@
 import React from "react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useGetJobsQuery} from "../../state/api/jobsApi.ts";
-import {RootState} from "../../state/store.ts";
+import {openModal} from "../../state/modal/modalSlice.ts";
+import {AppDispatch, RootState} from "../../state/store.ts";
 import {IJobItem} from "../JobItem/Interfaces.ts";
 
 const JobApplications: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const user = useSelector((state: RootState) => state.auth.user);
   const {data: jobs, isLoading, isError, error} = useGetJobsQuery(user?.id, {skip: !user?.id});
 
@@ -26,6 +28,20 @@ const JobApplications: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const handleView = (job: IJobItem) => {
+    dispatch(openModal({
+      modalType: "VIEW_JOB",
+      modalProps: job,
+    }));
+  };
+
+  const handleEdit = (job: IJobItem) => {
+    dispatch(openModal({
+      modalType: "EDIT_JOB",
+      modalProps: job,
+    }));
+  };
+
   return (
     <div className="JobApplications p-4">
       <div className="grid grid-cols-5 gap-4 font-semibold mb-2">
@@ -42,8 +58,12 @@ const JobApplications: React.FC = () => {
             </div>
           ))}
           <div className="flex gap-2">
-            <button className="text-blue-600 hover:underline cursor-pointer">Edit</button>
-            <button className="text-blue-600 hover:underline cursor-pointer">Details</button>
+            <button onClick={() => handleEdit(job)}
+                    className="text-blue-600 hover:underline cursor-pointer">Edit
+            </button>
+            <button onClick={() => handleView(job)}
+                    className="text-blue-600 hover:underline cursor-pointer">Details
+            </button>
           </div>
         </div>
       ))}
