@@ -7,7 +7,7 @@ import {AppDispatch} from "../../state/store.ts";
 import {IJobItem, JobItemProps} from "./Interfaces.ts";
 
 
-const JobItem: React.FC<JobItemProps> = ({job, searchQuery, mode}) => {
+const JobItem: React.FC<JobItemProps> = ({job, searchQuery, mode = "view"}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [updateJob, {isLoading}] = useUpdateJobMutation();
   const [editedJob, setEditedJob] = useState<Partial<IJobItem>>(job);
