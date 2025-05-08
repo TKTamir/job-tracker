@@ -21,7 +21,7 @@ const Dashboard: React.FC = () => {
         <button className="m-2" onClick={() => handleOpenModal("ADD_JOB")}>Add New Application
         </button>
       </div>
-      <div className="m-2">
+      <div className="m-2 w-full">
         <JobsList/>
         <JobApplications/>
       </div>
