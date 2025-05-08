@@ -34,7 +34,7 @@ export const jobsApi = createApi({
       }),
       invalidatesTags: ['Job'],
     }),
-    deleteJob: builder.mutation<{ success: boolean; id: string }, string>({
+    deleteJob: builder.mutation<{ success: boolean; id: IJobItem["id"] }, string>({
       query: (id) => ({
         url: `jobs/${id}`,
         method: 'DELETE',
