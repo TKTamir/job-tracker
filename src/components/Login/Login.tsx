@@ -60,7 +60,7 @@ const Login: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        <div className="text-center text-red-500">{isError && errorMessage}</div>
+        <span className="text-center text-red-500">{isError && errorMessage}</span>
         <button type="submit">{isLoading ? 'Logging in...' : 'Log in'}</button>
       </form>
     </div>
