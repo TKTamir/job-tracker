@@ -3,12 +3,14 @@ import {useDispatch} from "react-redux";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 import {useLoginMutation} from "../../state/api/authApi.ts";
 import {getServerError} from "../../utils/auth/error.ts";
+import {isStrongPassword, isValidEmail} from "../../utils/auth/validators.ts";
 import {AppDispatch} from "../../state/store.ts";
 import {LoginData} from "./Interfaces.ts";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [login, {isLoading, isError, error}] = useLoginMutation();
+  const [localErrors, setLocalErrors] = useState<{ email?: string; password?: string }>({});
   const [formData, setFormData] = useState<LoginData>({
     email: "",
     password: "",
@@ -25,6 +27,22 @@ const Login: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const newLocalErrors: typeof localErrors = {};
+
+    if (!isValidEmail(formData.email)) {
+      newLocalErrors.email = "Please enter a valid email address.";
+    }
+
+    if (!isStrongPassword(formData.password)) {
+      newLocalErrors.password = "Password must be at least 8 characters, include upper and lowercase letters, a number, and a special character.";
+    }
+
+    if (Object.keys(newLocalErrors).length > 0) {
+      setLocalErrors(newLocalErrors);
+      return;
+    }
+
+    setLocalErrors({});
 
     try {
       await login(formData).unwrap();
@@ -56,6 +74,8 @@ const Login: React.FC = () => {
           className="border p-2 rounded"
           required
         />
+        {localErrors.email && <span className="text-red-500 text-sm">{localErrors.email}</span>}
+        {localErrors.password && <span className="text-red-500 text-sm">{localErrors.password}</span>}
         <span className="text-center text-red-500">{isError && serverErrorMessage}</span>
         <button type="submit">{isLoading ? 'Logging in...' : 'Log in'}</button>
       </form>
