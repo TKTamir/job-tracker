@@ -37,8 +37,9 @@ const Home: React.FC = () => {
         <h2 className="m-4 font-bold text-3xl">Features</h2>
       </div>
       <div className="flex flex-row m-2">
-        {cardFields.map((card) => (
+        {cardFields.map((card, index) => (
           <Card
+            key={index}
             description={card.description}
             icon={card.icon}
             subtitle={card.subtitle}
