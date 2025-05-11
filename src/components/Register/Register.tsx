@@ -3,18 +3,21 @@ import {useDispatch} from "react-redux";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 import {useRegisterMutation} from "../../state/api/authApi.ts";
 import {isStrongPassword, isValidEmail} from "../../utils/auth/validators.ts";
+import {getServerError} from "../../utils/auth/error.ts";
 import {AppDispatch} from "../../state/store.ts";
 import {UserData} from "./Interfaces.ts";
 
 const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [register, {isLoading}] = useRegisterMutation();
+  const [register, {isLoading, isError, error}] = useRegisterMutation();
   const [localErrors, setLocalErrors] = useState<{ email?: string; password?: string }>({});
   const [formData, setFormData] = useState<UserData>({
     name: "",
     email: "",
     password: "",
   });
+
+  const serverErrorMessage = getServerError(error);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -85,6 +88,7 @@ const Register: React.FC = () => {
         />
         {localErrors.email && <span className="text-red-500 text-sm">{localErrors.email}</span>}
         {localErrors.password && <span className="text-red-500 text-sm">{localErrors.password}</span>}
+        <span className="text-center text-red-500">{isError && serverErrorMessage}</span>
         <button type="submit">{isLoading ? 'Registering...' : 'Register'}</button>
       </form>
     </div>
