@@ -53,17 +53,19 @@ const Modal: React.FC = () => {
   };
 
   return (
-    <div className="Modal fixed inset-0 flex items-center justify-center z-10"
+    <div className="Modal fixed inset-0 flex items-center justify-center z-10 p-1"
          onClick={handleBackdropClick}
     >
       <div
-        className="relative bg-white p-6 rounded-lg shadow-lg w-96"
+        className="relative bg-white p-6 rounded-lg shadow-lg w-[90vw] max-h-[70vh] overflow-y-auto"
         onClick={handleContentClick}
       >
-        <button onClick={() => dispatch(closeModal())}>
+        <button className="cursor-pointer pb-4" onClick={() => dispatch(closeModal())}>
           X
         </button>
-        {content}
+        <div>
+          {content}
+        </div>
       </div>
     </div>
   );
