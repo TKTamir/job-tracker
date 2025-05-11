@@ -2,8 +2,9 @@ import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {closeModal} from "../../state/modal/modalSlice.ts";
 import {useLoginMutation} from "../../state/api/authApi.ts";
+import {getServerError} from "../../utils/auth/error.ts";
 import {AppDispatch} from "../../state/store.ts";
-import {CustomFetchError, LoginData} from "./Interfaces.ts";
+import {LoginData} from "./Interfaces.ts";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,12 +14,7 @@ const Login: React.FC = () => {
     password: "",
   });
 
-  let errorMessage = "";
-
-  if (isError && error && "data" in error) {
-    const customError = error as CustomFetchError;
-    errorMessage = customError.data.message || "Login failed.";
-  }
+  const serverErrorMessage = getServerError(error);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -60,7 +56,7 @@ const Login: React.FC = () => {
           className="border p-2 rounded"
           required
         />
-        <span className="text-center text-red-500">{isError && errorMessage}</span>
+        <span className="text-center text-red-500">{isError && serverErrorMessage}</span>
         <button type="submit">{isLoading ? 'Logging in...' : 'Log in'}</button>
       </form>
     </div>
